@@ -12,12 +12,14 @@ A Model Context Protocol (MCP) server that wraps the [memegen.link](https://meme
 
 ## Installation
 
-```bash
-# Install globally
-npm install -g memegen-mcp-server
+The easiest way to use this MCP server is directly from GitHub with npx:
 
-# Or run directly with npx
-npx memegen-mcp-server
+```bash
+# Run directly from GitHub (recommended)
+npx github:Hais/memegen-mcp
+
+# Or install globally
+npm install -g memegen-mcp-server
 ```
 
 ## Usage
@@ -27,6 +29,10 @@ npx memegen-mcp-server
 The server runs on stdio and can be used with any MCP-compatible client:
 
 ```bash
+# Run from GitHub (recommended - always gets latest version)
+npx github:Hais/memegen-mcp
+
+# Or run locally if installed globally
 memegen-mcp-server
 ```
 
@@ -95,7 +101,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "memegen": {
       "command": "npx",
-      "args": ["memegen-mcp-server"]
+      "args": ["github:Hais/memegen-mcp"]
     }
   }
 }
@@ -109,7 +115,7 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json`:
   "mcpServers": {
     "memegen": {
       "command": "npx",
-      "args": ["memegen-mcp-server"]
+      "args": ["github:Hais/memegen-mcp"]
     }
   }
 }

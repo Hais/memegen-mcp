@@ -1,0 +1,195 @@
+# MemeGen MCP Server
+
+A Model Context Protocol (MCP) server that wraps the [memegen.link](https://memegen.link) API, allowing AI assistants to generate meme images with custom text.
+
+## Features
+
+- 🎨 **List Templates**: Browse hundreds of available meme templates
+- 🔍 **Search Templates**: Find specific meme formats by keyword
+- 🖼️ **Create Memes**: Generate meme URLs with custom text
+- 📝 **Template Info**: Get detailed information about any template
+- 🎯 **Multiple Formats**: Support for PNG, JPG, GIF, and WebP outputs
+
+## Installation
+
+```bash
+# Install globally
+npm install -g memegen-mcp-server
+
+# Or run directly with npx
+npx memegen-mcp-server
+```
+
+## Usage
+
+### Running the Server
+
+The server runs on stdio and can be used with any MCP-compatible client:
+
+```bash
+memegen-mcp-server
+```
+
+### Available Tools
+
+#### 1. `list_templates`
+Lists available meme templates from memegen.link.
+
+**Parameters:**
+- `filter` (optional): Search filter for template names
+- `animated` (optional): Filter for animated templates only
+
+**Example Response:**
+```json
+[
+  {
+    "id": "drake",
+    "name": "Drake",
+    "lines": 2,
+    "example": "https://api.memegen.link/images/drake/example.png"
+  }
+]
+```
+
+#### 2. `create_meme`
+Generates a meme image URL with custom text.
+
+**Parameters:**
+- `template_id` (required): The ID of the meme template
+- `top_text` (optional): Text for the top of the meme
+- `bottom_text` (optional): Text for the bottom of the meme
+- `text_lines` (optional): Array of text lines for multi-line memes
+- `style` (optional): Style variant to use
+- `font` (optional): Font to use for the text
+- `extension` (optional): Image format (png, jpg, gif, webp) - default: png
+
+**Example Response:**
+```json
+{
+  "url": "https://api.memegen.link/images/drake/No/Yes.png",
+  "template_id": "drake"
+}
+```
+
+#### 3. `search_templates`
+Searches for meme templates by keyword.
+
+**Parameters:**
+- `query` (required): Search query for finding templates
+
+#### 4. `get_template_info`
+Gets detailed information about a specific meme template.
+
+**Parameters:**
+- `template_id` (required): The ID of the template
+
+## Integration with Claude Desktop
+
+Add this to your Claude Desktop configuration file:
+
+### macOS
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "memegen": {
+      "command": "npx",
+      "args": ["memegen-mcp-server"]
+    }
+  }
+}
+```
+
+### Windows
+Edit `%APPDATA%\Claude\claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "memegen": {
+      "command": "npx",
+      "args": ["memegen-mcp-server"]
+    }
+  }
+}
+```
+
+## Examples
+
+### Creating a Simple Meme
+
+```javascript
+// Request
+{
+  "tool": "create_meme",
+  "arguments": {
+    "template_id": "drake",
+    "top_text": "Writing documentation",
+    "bottom_text": "Making memes instead"
+  }
+}
+
+// Response
+{
+  "url": "https://api.memegen.link/images/drake/Writing_documentation/Making_memes_instead.png"
+}
+```
+
+### Multi-line Memes
+
+```javascript
+// Request
+{
+  "tool": "create_meme",
+  "arguments": {
+    "template_id": "brain",
+    "text_lines": [
+      "Small brain: Using stock photos",
+      "Medium brain: Creating custom graphics",
+      "Large brain: Using memes",
+      "Galaxy brain: AI-generated memes"
+    ]
+  }
+}
+```
+
+## Development
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd memegen-mcp-server
+
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run dev
+
+# Build
+npm run build
+
+# Start production server
+npm start
+```
+
+## API Documentation
+
+This server wraps the [memegen.link API](https://api.memegen.link/docs/). For more information about available templates, styles, and customization options, visit:
+
+- API Documentation: https://api.memegen.link/docs/
+- OpenAPI Spec: https://api.memegen.link/docs/openapi.json
+- Web Interface: https://memegen.link
+
+## License
+
+MIT
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues and questions, please open an issue on GitHub.

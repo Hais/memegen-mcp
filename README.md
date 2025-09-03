@@ -1,5 +1,7 @@
 # MemeGen MCP Server
 
+![Memes Everywhere](https://api.memegen.link/images/buzz/memes/memes_everywhere.webp)
+
 A Model Context Protocol (MCP) server that wraps the [memegen.link](https://memegen.link) API, allowing AI assistants to generate meme images with custom text.
 
 ## Features

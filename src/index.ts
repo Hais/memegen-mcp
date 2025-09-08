@@ -66,6 +66,10 @@ const GetTemplateInfoSchema = z.object({
   template_id: z.string().describe("The ID of the template to get information about"),
 });
 
+const GetRandomTemplatesSchema = z.object({
+  count: z.number().int().min(1).max(5).optional().default(1).describe("Number of random templates to return (1-5)"),
+});
+
 async function fetchTemplates(filter?: string, animated?: boolean): Promise<Template[]> {
   try {
     const params = new URLSearchParams();
@@ -177,11 +181,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "search_templates",
-        description: "Search for meme templates by keyword",
+        description: "Search for meme templates by keyword across template names, IDs, and associated keywords. Rich collection includes TV shows (The Office, Futurama, The Simpsons), movies (Star Wars, Lord of the Rings), characters (Zoidberg, Philip J. Fry), and meme types (object-labeled, handshake, reaction memes)",
         inputSchema: {
           type: "object",
           properties: {
-            query: { type: "string", description: "Search query for finding templates" },
+            query: { 
+              type: "string", 
+              description: "Search query for finding templates. Examples: 'office' (The Office memes), 'fry' (Futurama's Philip J. Fry), 'handshake' (agreement memes), 'disappointed' (reaction memes)" 
+            },
           },
           required: ["query"],
         },
@@ -195,6 +202,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             template_id: { type: "string", description: "The ID of the template to get information about" },
           },
           required: ["template_id"],
+        },
+      },
+      {
+        name: "get_random_templates",
+        description: "Get one or more random meme templates for inspiration",
+        inputSchema: {
+          type: "object",
+          properties: {
+            count: { 
+              type: "number", 
+              minimum: 1, 
+              maximum: 5, 
+              description: "Number of random templates to return (1-5, default: 1)" 
+            },
+          },
         },
       },
     ],
@@ -306,6 +328,32 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           {
             type: "text",
             text: JSON.stringify(template, null, 2),
+          },
+        ],
+      };
+    }
+
+    case "get_random_templates": {
+      const args = GetRandomTemplatesSchema.parse(request.params.arguments);
+      const allTemplates = await fetchTemplates();
+      
+      // Shuffle array and take requested count
+      const shuffled = [...allTemplates].sort(() => 0.5 - Math.random());
+      const randomTemplates = shuffled.slice(0, args.count);
+      
+      const results = randomTemplates.map((t) => ({
+        id: t.id,
+        name: t.name,
+        lines: t.lines || 2,
+        example: t.example?.url || t.blank,
+        keywords: t.keywords || [],
+      }));
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(results, null, 2),
           },
         ],
       };

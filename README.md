@@ -80,16 +80,55 @@ Generates a meme image URL with custom text.
 ```
 
 #### 3. `search_templates`
-Searches for meme templates by keyword.
+Searches for meme templates by keyword across template names, IDs, and associated keywords.
 
 **Parameters:**
 - `query` (required): Search query for finding templates
+
+**Search Categories:**
+The search works across a rich collection of meme templates with keywords from:
+- **TV Shows & Movies**: "The Office", "Parks and Recreation", "Futurama", "The Simpsons", "Seinfeld", "South Park", "Family Guy", "Archer", "Star Wars", "Lord of the Rings", "Jurassic Park", "Harry Potter", "Lion King", "Anchorman", "Elf"
+- **Characters**: "Zoidberg", "Philip J. Fry", "Bart Simpson", "Dr. Nick", "Will Smith", "Admiral Ackbar", "Bilbo Baggins", "Mufasa and Simba"
+- **Meme Types**: "object-labeled", "handshake", "epic", "wish", "want", "everybody gets", "you win"
+- **Situations**: "Ain't Nobody Got Time For That", "Disappointed Black Guy", "Am I Out Of Touch?", "Sad Frog"
+
+**Example Searches:**
+- "office" - finds The Office related memes
+- "fry" - finds Philip J. Fry from Futurama memes  
+- "handshake" - finds handshake/agreement style memes
+- "disappointed" - finds reaction memes
 
 #### 4. `get_template_info`
 Gets detailed information about a specific meme template.
 
 **Parameters:**
 - `template_id` (required): The ID of the template
+
+#### 5. `get_random_templates`
+Gets one or more random meme templates for inspiration and discovery.
+
+**Parameters:**
+- `count` (optional): Number of random templates to return (1-5, default: 1)
+
+**Example Response:**
+```json
+[
+  {
+    "id": "drake",
+    "name": "Drake",
+    "lines": 2,
+    "example": "https://api.memegen.link/images/drake/example.png",
+    "keywords": []
+  },
+  {
+    "id": "fry",
+    "name": "Futurama Fry",
+    "lines": 2,
+    "example": "https://api.memegen.link/images/fry/example.png",
+    "keywords": ["Futurama", "Philip J. Fry"]
+  }
+]
+```
 
 ## Integration with Claude Desktop
 
